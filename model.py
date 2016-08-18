@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import func
 
 db = SQLAlchemy()
 
@@ -15,6 +16,8 @@ class Post(db.Model):
     # user_id = db.Column(db.ForeignKey('users.user_id'), nullable=False)
 
     post = db.Column(db.String(150), nullable=False)
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
+    photo_id = db.Column(db.String(150), nullable=True)
     # nullable = False should be place as last item in parentheses
     # photo_id = db.Column(db.ForeignKey('photos.id'), nullable=False)
     # location of comment is user zipcode translated into neighborhood name

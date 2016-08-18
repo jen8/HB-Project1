@@ -1,0 +1,17 @@
+<html>
+<head>
+    <title> Post Page </title>
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+</head>
+<body>
+  <p> Yo, This your post: {{ post.post }} at {{ post.date }} </p>
+  {% if post.photo_id != None %}
+<br><img class="imgdiv" src="static/uploads/{{ post.photo_id }}">
+{% endif %}
+
+</body>
+</html>
+
+<!-- add if statement to see if photo = None -->
+<!-- import style.css then put div tag with the class around the img tag -->
+<!-- to resize photo -->
