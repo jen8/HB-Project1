@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+     <link href='http://fonts.googleapis.com/css?family=Raleway:100,700'
+          rel='stylesheet'>
+
+    
+
+    <script>
+    // var locations = [
+    // [37.772380, -122.389412, '1251 3rd St.']
+    // [37.729732, -122.397981, '201 Williams St.']
+    // [37.762849, -122.422005, '630 Valencia St.']
+    // [37.780186, -122.432467, '1125 Fillmore St.']
+    // [37.767797, -122.455287, '1899 Waller Street'] 
+    // [37.779928, -122.464467, '461 6th Avenue']
+    // [37.724676, -122.446215, '1 Sgt. John V. Young Lane']
+    // [37.743733,  -122.481500, '2345 24th Avenue']
+    // [37.783674,  -122.412899,  '301 Eddy Street']
+    // ] 
+
+    // initMap creates map
+    function initMap() {
+      var mapProp = {
+        center: new google.maps.LatLng(37.773972,-122.431297),
+        zoom:5,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+      };
+      var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+
+    // // create map markers
+    // var marker, i;
+
+    // for (i = 0; i < locations.length; i++) { 
+    //   marker = new google.maps.Marker({
+    //     position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+    //     map: map
+    //   });
+
+    // add event listener, on click show infowindow with content
+    // google.maps.event.addListener(marker, 'click', (function(marker, i) {
+    //     return function() {
+    //       infowindow.setContent(locations[i][0]);
+    //       infowindow.open(map, marker);
+    //     }
+    //   })(marker, i));
+
+    // create map marker
+    var marker = new google.maps.Marker({
+          position: {lat: 37.798727, lng: -122.409910},
+          map: map,
+          label: 'a',
+          // title: 'Central Station 415-315-2400  766 Vallejo Street  SFPDCentralStation@sfgov.org'
+        });
+    // content string is the string you want in info window 
+    var contentString = "Hello"
+    var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
+    // add event listener when user clicks on marker open infowindow
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+   
+    }
+
+
+
+
+
+
+
+</script>
+<script 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDm0Fjdvf3wC7nSA5dXuuj5b9yA6-K3HQ&callback=initMap" async defer></script>
+</head>
+
+<body>
+<div id="googleMap" style="width:500px;height:380px;"></div>
+
+
+
+
+
+</body>
+
+</html>
