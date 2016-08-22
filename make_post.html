@@ -1,0 +1,25 @@
+<html>
+<head>
+    <title> Make Post </title>
+      <link rel="stylesheet" type="text/css" href="static/css/style.css">
+</head>
+<body>
+    {% include 'nav.html' %}
+
+<form action="/submit_post" method="POST" enctype="multipart/form-data">
+  <textarea rows="4" cols="50" name="post">
+  </textarea>
+  <input type="file" name="file">
+  <input type="submit" name="button"/>
+</form>
+
+
+</body>
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,46 @@
+<!doctype html>
+<html ng-app="demoApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Neighborhood</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.0/united/bootstrap.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="static/css/ubermelon.css"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular-route.js"></script>
+    <script src="static/jendemo.js"></script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#/display_post">Posts</a>
+        </div>
+
+        <ul class="nav navbar-nav">
+            <li><a href="#/make_post">Make Post</a></li>
+            <li><a href="#/crime_map">Crime Map</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div ng-view></div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+

@@ -12,16 +12,52 @@
     // initMap creates map
     function initMap() {
         var locations = [
-        [37.772380, -122.389412, '1251 3rd St.'],
-        [37.729732, -122.397981, '201 Williams St.'],
-        [37.762849, -122.422005, '630 Valencia St.'],
-        [37.780186, -122.432467, '1125 Fillmore St.'],
-        [37.767797, -122.455287, '1899 Waller Street'], 
-        [37.779928, -122.464467, '461 6th Avenue'],
-        [37.724676, -122.446215, '1 Sgt. John V. Young Lane'],
-        [37.743733,  -122.481500, '2345 24th Avenue'],
-        [37.783674,  -122.412899,  '301 Eddy Street']
-        ] 
+        [37.798732, -122.409919, 'SFPD', 'Central Station', '766 Vallejo St.', 
+            'San Francisco CA 94133', '415-315-2400', 'SFPDCentralStation@sfgov.org'],
+
+        [37.772380, -122.389412, 'SFPD', 'Southern Station', '1251 3rd St.', 
+            'San Francisco CA 94158', '415-576-6000', 'SFPDSouthernStation@sfgov.org'],
+
+        // [37.729732, -122.397981, 'SFPD' + "<br/>" + 'Bayview Station' + "<br/>" + '201 Williams Ave.' 
+        //     + "<br/>" + 'San Francisco, CA 94124' + "<br/>" + '415-671-2300' 
+        //     + "<br/>" + 'SFPDBayviewStation@sfgov.org'],
+
+        // [37.762849, -122.422005, 'SFPD' + "<br/>" + 'Mission Station' + "<br/>"+
+        //     '630 Valencia St.' + "<br/>" + 'San Francisco, CA 94110' + "<br/>" + '415-558-5400'
+        //     + "<br>" + 'SFPDMissionStation@sfgov.org'],
+
+
+        // [37.780186, -122.432467, 'SFPD' + "<br>" + 'Northern Station' + "<br>" + 
+        //     '1125  Fillmore St.' + "<br>" + 'San Francisco, CA 94115' + "<br/>" + '415-614-3400' +
+        //     "<br>" + 'SFPDNorthernStation@sfgov.org'],
+
+
+        // [37.767797, -122.455287, 'SFPD' + "<br/>" + 'Park Station' + "<br/>" + '1899 Waller St.'
+        //     + "<br/>" + 'San Francisco, CA 94117' + "<br/>" + '415-242-3000' + "<br/>" + 
+        //     'SFPDParkStation@sfgov.org'], 
+
+
+        // [37.779928, -122.464467, 'SFPD' + "<br/>" + 'Richmond Station' + "<br/>" + '461 6th Ave'
+        //     + "<br/>" + 'San Francisco, CA 94103' + "<br/>" + '415-666-8000' + "<br/>" + 
+        //     'SFPDRichmondStation@sfgov.org'],
+
+
+        // [37.724676, -122.446215, 'SFPD' + "<br>" + 'Ingleside Station' + "<br>" + 
+        //     '1 Sgt. John V. Young Lane' + "<br>" + 'San Francisco, CA 94112' + "<br>" + 
+        //     '415-404-4000' + "<br>" + 'SFPDInglesideStation@sfgov.org'],
+
+
+        // [37.743733,  -122.481500, 'SFPD' + "<br>" + 'Taraval Station' + "<br>" + '2345 24th Avenue' + 
+        //     "<br>" + 'San Francisco, CA 94116' + "<br>" + '415-759-3100' + "<br>" 
+        //     + 'SFPDTaravalStation@sfgov.org'],
+
+
+        // [37.783674,  -122.412899, 'SFPD'+ "<br>" + 'Tenderloin Station' +
+        //     + "<br>" + '301 Eddy Street' + "<br>" + 'San Francisco, CA 94102' + "<br>" + 
+        //     '415-345-7300' + "<br>" + 'SFPDTenderloinStation@sfgov.org'] 
+          ]
+
+
       var mapProp = {
         center: new google.maps.LatLng(37.773972,-122.431297),
         zoom:12,
@@ -48,7 +84,9 @@
         // add event listener, on click show infowindow with content
         google.maps.event.addListener(marker, 'click', (function(marker, i) {
             return function() {
-              infowindow.setContent(locations[i][2]);
+              var str = locations[i][2] + '<br>' + locations[i][3] + '<br>' + locations[i][4] + '<br>'
+                        + locations[i][5] + '<br>' + locations[i][6] + '<br>' + locations[i][7] + '<br>';
+              infowindow.setContent(str);
               infowindow.open(map, marker);
             }
           })(marker, i));
@@ -83,9 +121,13 @@
 </script>
 <script 
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDm0Fjdvf3wC7nSA5dXuuj5b9yA6-K3HQ&callback=initMap" async defer></script>
+  <link rel="stylesheet" type="text/css" href="static/css/style.css">
+
 </head>
 
 <body>
+{% include 'nav.html' %}
+
 <div id="googleMap" style="width:500px;height:380px;"></div>
 
 
