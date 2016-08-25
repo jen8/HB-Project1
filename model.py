@@ -13,7 +13,7 @@ class Post(db.Model):
     # if a table that has a single matching row in the second table, 
     # the first table has foreign key
     post_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    # user_id = db.Column(db.ForeignKey('users.user_id'), nullable=False)
+    user_id = db.Column(db.ForeignKey('users.user_id'), nullable=False)
 
     post = db.Column(db.String(150), nullable=False)
     date = db.Column(db.DateTime(timezone=True), default=func.now())
@@ -22,6 +22,7 @@ class Post(db.Model):
     # photo_id = db.Column(db.ForeignKey('photos.id'), nullable=False)
     # location of comment is user zipcode translated into neighborhood name
     # location = db.Column(db.String(50), nullable=False)
+    category = db.Column(db.String(50), nullable=True)
 
     # establish relationship between posts and wallposts table 
     # wallpost = db.relationship('WallPost', backref='posts')

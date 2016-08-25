@@ -61,10 +61,11 @@ def login_process():
 
     flash("Logged in")
     # return redirect("/users/%s" % user.user_id)
-    return redirect("/make_post")
+    return redirect("make_post")
     # create route for this
 
 #### FIX ME...log in allows non-users to post
+
 
 @app.route('/registration_form', methods=['GET'])
 def registration_form():
@@ -106,22 +107,28 @@ def process_registration():
 @app.route('/make_post')
 def make_post():
     """Shows form to make text post or photo post."""
+    # if "user_id" not in session:  #force user to be logged-in
+    #     return redirect("/")
 
-    return render_template("make_post.html")
+    # greet user when arriving to their post page
+    # get the user id from session then, use id to get firstname of user
+    user = User.query.filter_by(user_id=session["user_id"]).first()
+
+
+    return render_template("make_post.html", first_name=user.first_name)
 
 
 @app.route('/submit_post', methods=['POST'])
 def show_post():
     """Takes posts from website and adds them to crime database."""
-
     filename = None
   
-        # check if the post request has the file part
+    # check if the post request has the file part
     if 'file' not in request.files:
         print "one"
         flash('No file part')
         ### TO DO : FIX flash and redirect, or else it doesnt get saved to db
-        return redirect(request.url) 
+        return redirect(request.url)
     file = request.files['file']
     # if user does not select file, browser also
     # submit a empty part without filename
@@ -145,41 +152,74 @@ def show_post():
 
     # take the user text post
     post = request.form["post"]
+    # take the category of post user has selected on makepost.html page
+    category = request.form["category"]
+
     # get current date
     right_now = datetime.datetime.utcnow()
-    
-    # date = right_now.strftime("%B %d, %Y")
+
+
+    # get user id from session, then put it into new Post object
     # add new post to database and commit
-    new_post = Post(post=post, photo_id=filename, date=right_now)
+    new_post = Post(post=post, photo_id=filename, category=category, date=right_now, user_id=session["user_id"])
 
     db.session.add(new_post)
     db.session.commit()
 
  
     # flash("Post %s added." % post)
-
-    return render_template("submit_post.html", post=new_post)
+    post = Post.query.all()
+    return redirect("/display_post")
 
 #### FIXME   /r+ symbol added to some posts in database
 
 
-@app.route('/display_post')
+@app.route('/display_post', methods=['GET'])
 def display_post():
     """Display Post from crime database to website."""
     # takes posts from database to website
-
     post = Post.query.all()
+
+    # get the option user has selected from the sort menu on display_post.html
+    sort_type = request.args.get("type")
+    
+    # get zipcode from zipcode form on display_post.html
+    zipcode_area = request.form.get("zipcode")
+    print "Sort Type" + str(sort_type)
+    # if zipcode:
+        # sorts by newest posts on top
+    if sort_type == "Most Recent" or sort_type == None:
+        sorted_posts = post[::-1]
+
+     # sorts by oldest posts on top
+    elif sort_type == "Least Recent":
+        # REMEMBER TO CHANGE 8 since first 8 db entries do not have datetime
+        # key=lambda post, create a new variable called post
+        sorted_posts = sorted(post[8:], key=lambda post: post.date)
+
+    # sorts by crime alerts
+    elif sort_type == "Crime Alert":
+        sorted_posts = Post.query.filter_by(category='crime').all()
+
+    # sorts by community events
+    elif sort_type == "Community Event":
+        sorted_posts = Post.query.filter_by(category='community').all()
+
+    # # if users chooses not to sort, just display all posts
+    # else:
+    #     sorted_posts = Post.query.all()
+
 
     # query date from database
     raw_date = db.session.query(Post.date).all()
     print raw_date
-    # raw_date = Post.query.filter_by(date=date)
-    # SELECT date FROM posts;
+
     # take current date into a better looking format (August 16, 2016)
     # strftime turns datetime object into string 
     neater_date = raw_date[10][0].strftime("%B %d, %Y")
 
-    return render_template("display_post.html", post=post, neater_date=neater_date)
+    
+    return render_template("display_post.html", post=sorted_posts, neater_date=neater_date)
 
 
 
@@ -231,12 +271,19 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
 
-@app.route('/crime_map', methods=['GET'])
-def show_crime_map():
-    """Shows crime map and crime graphs"""
+@app.route('/police_district', methods=['GET'])
+def show_police_station():
+    """Shows police station map"""
 
-    return render_template("crime_map.html")
+    return render_template("police_district.html")
 
+
+# TO DO: CONNECT THIS ROUTE TO SERVE
+@app.route('/safety_tips', methods=['GET'])
+def show_safety_tips():
+    """Shows personal safety tips"""
+
+    return render_template("safety_tips.html")
 
 @app.route('/logout')
 def logout():
