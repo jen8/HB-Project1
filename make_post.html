@@ -4,13 +4,17 @@
       <link rel="stylesheet" type="text/css" href="static/css/style.css">
 </head>
 <body>
-    {% include 'nav.html' %}
+    {% include 'navbar.html' %}
+
+<p> Hello {{ first_name }}!
 
 <form action="/submit_post" method="POST" enctype="multipart/form-data">
   <textarea rows="4" cols="50" name="post">
   </textarea>
   <input type="file" name="file">
   <input type="submit" name="button"/>
+  <input type="radio" name="category" value="crime" checked> Crime Alert
+  <input type="radio" name="category" value="community"> Community Event
 </form>
 
 

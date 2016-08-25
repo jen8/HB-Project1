@@ -2,15 +2,54 @@
 <head>
   <title> Wall Post </title>
   <link rel="stylesheet" type="text/css" href="static/css/style.css">
-</head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head> 
 <body>
-{% include 'nav.html' %}
-<ul>
+
+  <!-- FINISH drop down menu to filter posts by date, community event, or crime alert
+ -->
+ 
+
+{% include 'navbar.html' %}
+
+<!-- added drop down menu  -->
+<form action="/display_post" method="GET"> 
+  <div> Sort
+    <select name="type">
+      <option value="Most Recent">Most Recent</option>
+      <option value="Least Recent">Least Recent</option>
+      <option value="Crime Alert">Crime Alert</option>
+      <option value="Community Event">Community Event</option>
+    </select>
+
+    <input type="submit" value="Sort">
+  
+  </div>
+
+<!-- added zipcode form -->
+</form>
+
+<div>
+  <form action="/display_post" method="GET">
+  Zip Code:<br>
+  <input type="number" name="zipcode"><br>
+  <input type="submit" value="Submit">
+</form>
+</div>
+
+
+
+<br>
+<br>
+<br>
+
   {% for p in post %}
     <li>
       
       <!--   show img tag below only if p.photo_id does not equal None -->
-      <!-- add drop down menu to sort by date, crime, or community event -->
       
       {% if p.photo_id != None %}
       <!-- use jinja to allow users to upload photos -->
@@ -19,8 +58,8 @@
         {% endif %}
         <div class="textdiv">{{ p.post }}</div>
         {% if p.date != None %}
-        <!-- add time to post -->
-        <div class="textdiv">{{ p.date.strftime("%B %d, %Y") }}</div>
+        <!-- add date and time to post -->
+        <div class="textdiv">{{ p.date.strftime("%B %d, %Y") }} &nbsp;&nbsp;&nbsp;&nbsp;{{ p.date.strftime("%I:%M %p") }} </div>
         {% endif %}
       
     </li>
@@ -28,6 +67,6 @@
 
 </ul>
 
-
+</div>
 </body>
 </html>
