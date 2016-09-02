@@ -9,63 +9,65 @@
 </head> 
 <body>
 
-  <!-- FINISH drop down menu to filter posts by date, community event, or crime alert
- -->
  
 
 {% include 'navbar.html' %}
 
 <!-- added drop down menu  -->
 <form action="/display_post" method="GET"> 
-  <div> Sort
+  <div> Search
     <select name="type">
       <option value="Most Recent">Most Recent</option>
-      <option value="Least Recent">Least Recent</option>
-      <option value="Crime Alert">Crime Alert</option>
-      <option value="Community Event">Community Event</option>
+      <!-- if user selects neighborhood on make posts page, pre-select that neighborhood on display post -->
+      <option value="Least Recent" {% if sort_type == "Least Recent" %}selected{% endif %}>Least Recent</option>
+      <option value="Crime Alert" {% if sort_type == "Crime Alert" %}selected{% endif %}>Crime Alert</option>
+      <option value="Community Event" {% if sort_type == "Community Event" %}selected{% endif %}>Community Event</option>
     </select>
-
-    <input type="submit" value="Sort">
-  
   </div>
 
-<!-- added zipcode form -->
+
+  <div> Select a neighborhood:
+    <select name="neighborhood">
+      <option value="All">All Neighborhoods</option>
+      <!-- if user selects neighborhood on make posts page, pre-select that neighborhood on display post -->
+      <option value="Mission" {% if location == "Mission" %}selected{% endif %}>Mission</option>
+      <option value="Richmond" {% if location == "Richmond" %}selected{% endif %}>Richmond</option>
+      <option value="Bernal Heights" {% if location == "Bernal Heights" %}selected{% endif %}>Bernal Heights</option>
+      <option value="Haight Ashbury" {% if location == "Haight Ashbury" %}selected{% endif %}>Haight Ashbury</option>
+      <option value="Noe Valley" {% if location == "Noe Valley" %}selected{% endif %}>Noe Valley</option>
+    </select>
+  </div>
+
+
+  <input type="submit" value="Search">
+  
 </form>
 
-<div>
-  <form action="/display_post" method="GET">
-  Zip Code:<br>
-  <input type="number" name="zipcode"><br>
-  <input type="submit" value="Submit">
-</form>
-</div>
-
-
 
 <br>
 <br>
 <br>
 
-  {% for p in post %}
-    <li>
-      
-      <!--   show img tag below only if p.photo_id does not equal None -->
-      
-      {% if p.photo_id != None %}
-      <!-- use jinja to allow users to upload photos -->
+{% for p in post %}
 
-        <div class="imgdiv"> <img src="static/uploads/{{ p.photo_id }}"/></div>
-        {% endif %}
-        <div class="textdiv">{{ p.post }}</div>
-        {% if p.date != None %}
-        <!-- add date and time to post -->
-        <div class="textdiv">{{ p.date.strftime("%B %d, %Y") }} &nbsp;&nbsp;&nbsp;&nbsp;{{ p.date.strftime("%I:%M %p") }} </div>
-        {% endif %}
-      
-    </li>
-  {% endfor %}
+  <div class="textdiv">
+    <!--   show img tag below only if p.photo_id does not equal None -->
+    {% if p.photo_id != None %}
+    <!-- use jinja to allow users to upload photos -->
+    <div class="imgdiv"> <img src="static/uploads/{{ p.photo_id }}"/></div>
+    {% endif %}
 
-</ul>
+    <div class="posttext">{{ p.post }}</div>
+    {% if p.date != None %}
+    <!-- add date and time to post -->
+    <div class="postdate">
+      {{ p.date.strftime("%B %d, %Y") }} &nbsp;&nbsp;&nbsp;{{ p.date.strftime("%I:%M %p") }} 
+    </div>
+    {% endif %}
+  </div>
+
+{% endfor %}
+
 
 </div>
 </body>

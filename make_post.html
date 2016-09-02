@@ -9,12 +9,21 @@
 <p> Hello {{ first_name }}!
 
 <form action="/submit_post" method="POST" enctype="multipart/form-data">
-  <textarea rows="4" cols="50" name="post">
-  </textarea>
-  <input type="file" name="file">
-  <input type="submit" name="button"/>
+  <textarea rows="4" cols="50" name="post"></textarea>
+  <input type="file" name="file"><br>
   <input type="radio" name="category" value="crime" checked> Crime Alert
   <input type="radio" name="category" value="community"> Community Event
+  <br><br>
+  <div> Select a neighborhood:
+    <select name="neighborhood">
+      <option value="Mission">Mission</option>
+      <option value="Richmond">Richmond</option>
+      <option value="Bernal Heights">Bernal Heights</option>
+      <option value="Haight Ashbury">Haight Ashbury</option>
+      <option value="Noe Valley">Noe Valley</option>
+    </select>
+  <input type="submit" name="button"/>
+  </div>
 </form>
 
 

@@ -70,7 +70,7 @@
       marker = new google.maps.Marker({
         position: new google.maps.LatLng(locations[i][0], locations[i][1]),
         map: map,
-        label: "b"
+        // label: "b"
       });
         var contentString = "Hello"
         var infowindow = new google.maps.InfoWindow({
@@ -87,29 +87,9 @@
           })(marker, i));
     }
 
-    // create map marker
-    // var marker = new google.maps.Marker({
-    //       position: {lat: 37.798727, lng: -122.409910},
-    //       map: map,
-    //       label: 'a',
-    //       // title: 'Central Station 415-315-2400  766 Vallejo Street  SFPDCentralStation@sfgov.org'
-    //     });
-    // // content string is the string you want in info window 
-    // var contentString = "Hello"
-    // var infowindow = new google.maps.InfoWindow({
-    //       content: contentString
-    //     });
-
-    // // add event listener when user clicks on marker open infowindow
-    //     marker.addListener('click', function() {
-    //       infowindow.open(map, marker);
-    //     });
+    
    
     }
-
-
-
-
 
 
 
@@ -123,7 +103,7 @@
 <body>
 {% include 'navbar.html' %}
 
-<div id="googleMap" style="width:500px;height:380px;"></div>
+<div id="googleMap" style="width:1200px;height:700px;"></div>
 
 
 
