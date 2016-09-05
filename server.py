@@ -20,6 +20,7 @@ from model import connect_to_db, db, Post, User
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = "ABC"
@@ -84,6 +85,7 @@ def process_registration():
     firstname = request.form["firstname"]
     lastname = request.form["lastname"]
     zipcode = request.form["zipcode"]
+
     # take all of the user input and put all user info into database
     new_user = User(username=username, password=password, first_name=firstname, 
     last_name=lastname, zipcode=zipcode)
@@ -155,13 +157,15 @@ def show_post():
     # take the category of post user has selected on makepost.html page
     category = request.form["category"]
 
+    location = request.form["neighborhood"]
+
     # get current date
     right_now = datetime.datetime.utcnow()
 
 
     # get user id from session, then put it into new Post object
     # add new post to database and commit
-    new_post = Post(post=post, photo_id=filename, category=category, date=right_now, user_id=session["user_id"])
+    new_post = Post(post=post, photo_id=filename, location=location, category=category, date=right_now, user_id=session["user_id"])
 
     db.session.add(new_post)
     db.session.commit()
@@ -178,48 +182,46 @@ def show_post():
 def display_post():
     """Display Post from crime database to website."""
     # takes posts from database to website
-    post = Post.query.all()
-
+    
     # get the option user has selected from the sort menu on display_post.html
     sort_type = request.args.get("type")
+
+    # get the option that the user requested for neighborhood on make_post.html
+    neighborhoods = request.args.get("neighborhood")
     
-    # get zipcode from zipcode form on display_post.html
-    zipcode_area = request.form.get("zipcode")
     print "Sort Type" + str(sort_type)
-    # if zipcode:
-        # sorts by newest posts on top
-    if sort_type == "Most Recent" or sort_type == None:
-        sorted_posts = post[::-1]
 
      # sorts by oldest posts on top
-    elif sort_type == "Least Recent":
-        # REMEMBER TO CHANGE 8 since first 8 db entries do not have datetime
-        # key=lambda post, create a new variable called post
-        sorted_posts = sorted(post[8:], key=lambda post: post.date)
-
+    if sort_type == "Least Recent":       
+        query = Post.query.order_by(Post.date)      
     # sorts by crime alerts
     elif sort_type == "Crime Alert":
-        sorted_posts = Post.query.filter_by(category='crime').all()
-
+        query = Post.query.filter_by(category='crime')
     # sorts by community events
     elif sort_type == "Community Event":
-        sorted_posts = Post.query.filter_by(category='community').all()
+        query = Post.query.filter_by(category='community')
+    else:  # sort_type == "Most Recent" or sort_type == None:
+        # sorts by newest posts on top by default
+        query = Post.query.order_by(Post.date.desc())
+        
 
-    # # if users chooses not to sort, just display all posts
-    # else:
-    #     sorted_posts = Post.query.all()
+    #  if users chooses not to sort, just display most recent and all neighborhoods
+    if neighborhoods is not None and neighborhoods != "All":
+        query = query.filter_by(location=neighborhoods)
 
+    # run query
+    sorted_posts = query.all()
 
-    # query date from database
-    raw_date = db.session.query(Post.date).all()
-    print raw_date
+    # # query date from database
+    # raw_date = db.session.query(Post.date).all()
+    # print raw_date
 
-    # take current date into a better looking format (August 16, 2016)
-    # strftime turns datetime object into string 
-    neater_date = raw_date[10][0].strftime("%B %d, %Y")
+    # # take current date into a better looking format (August 16, 2016)
+    # # strftime turns datetime object into string
+    # neater_date = raw_date[10][0].strftime("%B %d, %Y")
 
-    
-    return render_template("display_post.html", post=sorted_posts, neater_date=neater_date)
+    return render_template("display_post.html", post=sorted_posts, \
+        sort_type=sort_type, location=neighborhoods)
 
 
 
@@ -277,8 +279,18 @@ def show_police_station():
 
     return render_template("police_district.html")
 
+@app.route('/crime_map', methods=['GET'])
+def show_crime_map():
+    """Show crime map"""
 
-# TO DO: CONNECT THIS ROUTE TO SERVE
+    return render_template("crime_map.html")
+
+@app.route('/google_crime', methods=['GET'])
+def show_google_crime_map():
+    """Show crime map"""
+
+    return render_template("google_crime_map.html")
+
 @app.route('/safety_tips', methods=['GET'])
 def show_safety_tips():
     """Shows personal safety tips"""

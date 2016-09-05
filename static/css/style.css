@@ -1,11 +1,35 @@
+.safety_tips_div {
+    border-style:solid;
+    border-color:gray;
+
+}
+
+li.safety_tips_list {
+  border-style:solid;
+  border-color:gray;
+
+}
+
+
+.posttext {
+    font-size: 15px;
+
+}
+
+.postdate {
+    font-size: 12px;
+
+}
 
 .textdiv {
+    margin-top: 20px;
     border-style:solid;
     border-color:gray;
 }
 
 
 .imgdiv {
+    margin-top: 20px;
     height:104px;
     width:140px;
 }
