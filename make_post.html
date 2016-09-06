@@ -6,10 +6,12 @@
 <body>
     {% include 'navbar.html' %}
 
-<p> Hello {{ first_name }}!
+<div style="margin-top:100px" class="center maincolorbkground">
+  <div class="formpad">
+Hello {{ first_name }}!
 
-<form action="/submit_post" method="POST" enctype="multipart/form-data">
-  <textarea rows="4" cols="50" name="post"></textarea>
+<form action="/submit_post" method="POST" enctype="multipart/form-data" style="margin-bottom:0em;">
+  <textarea style="margin-top:10px;margin-bottom:10px" rows="4" cols="50" name="post"></textarea><br>
   <input type="file" name="file"><br>
   <input type="radio" name="category" value="crime" checked> Crime Alert
   <input type="radio" name="category" value="community"> Community Event
@@ -22,9 +24,12 @@
       <option value="Haight Ashbury">Haight Ashbury</option>
       <option value="Noe Valley">Noe Valley</option>
     </select>
-  <input type="submit" name="button"/>
+  &nbsp;&nbsp;
+  <input type="submit" class="button" name="button"/>
   </div>
 </form>
+  </div>
+</div>
 
 
 </body>

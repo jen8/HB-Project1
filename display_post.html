@@ -7,15 +7,32 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head> 
-<body>
 
- 
+<body style="background-color:#79cd18;">
+<div class="background">
+
 
 {% include 'navbar.html' %}
 
+<!-- dropdown menu delete if not working -->
+<!-- <div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+  <span class="caret"></span></button>
+  <ul class="dropdown-menu">
+    <li><a href="#">HTML</a></li>
+    <li><a href="#">CSS</a></li>
+    <li><a href="#">JavaScript</a></li>
+  </ul>
+</div> -->
+
+
+<div class="center col-xs-offset-8xxxx col-xs-4xxxxx">
 <!-- added drop down menu  -->
 <form action="/display_post" method="GET"> 
-  <div> Search
+
+
+
+  <div style="padding-bottom:5px" class="dropdown"> <!-- Search -->
     <select name="type">
       <option value="Most Recent">Most Recent</option>
       <!-- if user selects neighborhood on make posts page, pre-select that neighborhood on display post -->
@@ -26,7 +43,7 @@
   </div>
 
 
-  <div> Select a neighborhood:
+  <div style="padding-bottom:5px"> <!-- Select a neighborhood: -->
     <select name="neighborhood">
       <option value="All">All Neighborhoods</option>
       <!-- if user selects neighborhood on make posts page, pre-select that neighborhood on display post -->
@@ -39,36 +56,48 @@
   </div>
 
 
-  <input type="submit" value="Search">
+  <input type="submit" class="button" value="Search">
   
 </form>
+</div>
 
 
-<br>
-<br>
-<br>
 
 {% for p in post %}
 
-  <div class="textdiv">
+  <!-- add 3 posts in a row -->
+  <!-- <div class="col-sm-4 textdiv"> -->
+
+
+  <div class="postbox center">
+  <div class="contentbox">
+
     <!--   show img tag below only if p.photo_id does not equal None -->
     {% if p.photo_id != None %}
     <!-- use jinja to allow users to upload photos -->
     <div class="imgdiv"> <img src="static/uploads/{{ p.photo_id }}"/></div>
     {% endif %}
 
-    <div class="posttext">{{ p.post }}</div>
+    <div class="posttext {% if p.photo_id != None %}avoidpic{% endif %}">{{ p.post }}</div>
     {% if p.date != None %}
     <!-- add date and time to post -->
-    <div class="postdate">
+    <div class="postdate {% if p.photo_id != None %}avoidpic{% endif %}">
       {{ p.date.strftime("%B %d, %Y") }} &nbsp;&nbsp;&nbsp;{{ p.date.strftime("%I:%M %p") }} 
     </div>
     {% endif %}
+  
   </div>
+  </div>
+
+
 
 {% endfor %}
 
 
 </div>
+</div>
+
+</div>
+
 </body>
 </html>
