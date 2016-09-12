@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+     <link href='http://fonts.googleapis.com/css?family=Raleway:100,700'
+          rel='stylesheet'>
+
+    
+
+    <script>
+    
+
+    // initMap creates map
+    function initMap() {
+        var locations = [
+        [37.798732, -122.409919, 'SFPD', 'Central Station', '766 Vallejo St.', 
+            'San Francisco CA 94133', '415-315-2400', 'SFPDCentralStation@sfgov.org'],
+
+        [37.772380, -122.389412, 'SFPD', 'Southern Station', '1251 3rd St.', 
+            'San Francisco CA 94158', '415-576-6000', 'SFPDSouthernStation@sfgov.org'],
+
+        [37.729732, -122.397981, 'SFPD', 'Bayview Station', '201 Williams Ave.', 
+            'San Francisco, CA 94124', '415-671-2300', 'SFPDBayviewStation@sfgov.org'],
+
+        [37.762849, -122.422005, 'SFPD', 'Mission Station','630 Valencia St.',
+           'San Francisco, CA 94110', '415-558-5400', 'SFPDMissionStation@sfgov.org'],
+
+
+        [37.780186, -122.432467, 'SFPD', 'Northern Station','1125  Fillmore St.',
+            'San Francisco, CA 94115', '415-614-3400', 'SFPDNorthernStation@sfgov.org'],
+
+
+        [37.767797, -122.455287, 'SFPD','Park Station','1899 Waller St.',
+            'San Francisco, CA 94117','415-242-3000','SFPDParkStation@sfgov.org'], 
+
+
+        [37.779928, -122.464467, 'SFPD','Richmond Station', '461 6th Ave',
+            'San Francisco, CA 94103', '415-666-8000', 'SFPDRichmondStation@sfgov.org'],
+
+
+        [37.724676, -122.446215, 'SFPD', 'Ingleside Station',
+        '1 Sgt. John V. Young Lane', 'San Francisco, CA 94112','415-404-4000', 
+        'SFPDInglesideStation@sfgov.org'],
+
+
+        [37.743733,  -122.481500, 'SFPD', 'Taraval Station', '2345 24th Avenue', 
+        'San Francisco, CA 94116', '415-759-3100','SFPDTaravalStation@sfgov.org'],
+
+
+        [37.783674,  -122.412899, 'SFPD', 'Tenderloin Station',
+        '301 Eddy Street', 'San Francisco, CA 94102', '415-345-7300',
+        'SFPDTenderloinStation@sfgov.org'] 
+
+        ]
+
+
+      var mapProp = {
+        center: new google.maps.LatLng(37.773972,-122.431297),
+        zoom:12,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+      };
+      var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+
+     // create map markers
+
+
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) { 
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+        map: map,
+        // label: "b"
+      });
+        var contentString = "Hello"
+        var infowindow = new google.maps.InfoWindow({
+              content: contentString
+            });
+        // add event listener, on click show infowindow with content
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+              var str = '<b>'+ locations[i][2] + '</b>' + '<br>' + locations[i][3] + '<br>' + locations[i][4] + '<br>'
+                        + locations[i][5] + '<br>' + locations[i][6] + '<br>' + locations[i][7] + '<br>';
+              infowindow.setContent(str);
+              infowindow.open(map, marker);
+            }
+          })(marker, i));
+    }
+
+    
+   
+    }
+
+
+
+</script>
+<script 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDm0Fjdvf3wC7nSA5dXuuj5b9yA6-K3HQ&callback=initMap" async defer></script>
+  <link rel="stylesheet" type="text/css" href="static/css/style.css">
+
+</head>
+
+<body>
+{% include 'navbar.html' %}
+
+<div id="googleMap" style="width:1200px;height:700px;"></div>
+
+
+
+
+
+</body>
+
+</html>

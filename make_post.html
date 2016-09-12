@@ -1,0 +1,43 @@
+<html>
+<head>
+    <title> Make Post </title>
+      <link rel="stylesheet" type="text/css" href="static/css/style.css">
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+<div style="margin-top:100px" class="center maincolorbkground">
+  <div class="formpad">
+Hello {{ first_name }}!
+
+<form action="/submit_post" method="POST" enctype="multipart/form-data" style="margin-bottom:0em;">
+  <textarea style="margin-top:10px;margin-bottom:10px" rows="4" cols="50" name="post"></textarea><br>
+  <input type="file" name="file"><br>
+  <input type="radio" name="category" value="crime" checked> Crime Alert
+  <input type="radio" name="category" value="community"> Community Event
+  <br><br>
+  <div> Select a neighborhood:
+    <select name="neighborhood">
+      <option value="Mission">Mission</option>
+      <option value="Richmond">Richmond</option>
+      <option value="Bernal Heights">Bernal Heights</option>
+      <option value="Haight Ashbury">Haight Ashbury</option>
+      <option value="Noe Valley">Noe Valley</option>
+    </select>
+  &nbsp;&nbsp;
+  <input type="submit" class="button" name="button"/>
+  </div>
+</form>
+  </div>
+</div>
+
+
+</body>
+</html>
+
+
+
+
+
+
+

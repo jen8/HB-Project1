@@ -1,0 +1,43 @@
+<html>
+<head>
+    <title> Log In Page </title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body background="http://hdwallpaperbackgrounds.net/wp-content/uploads/2015/07/San-Francisco-fog-HD-Wallpapers.jpg">
+  <h2 style="color:red">Love Thy Neighborhood</h2>  
+  <h1>Login</h1>
+  
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+<!--     {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+ -->    </ul>
+  {% endif %}
+{% endwith %}
+    <form action="/log_in" method="POST" class="form-inline">
+
+        <div class="form-group">
+            <label>Username:
+                <input type="username" name="username" class="form-control" required>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>Password:
+                <input type="password" name="password" class="form-control" required>
+            </label>
+        </div>
+
+        <div>
+            <input type="submit" value="Log In" class="btn btn-default">
+        </div>
+        <a href="/registration_form">Register</a>
+
+    </form>
+
+
+</body>
+</html> 
