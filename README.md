@@ -13,4 +13,4 @@ Love Thy Neighborhood gives users access to a variety of neighborhood events tha
 ![Wallpost](Wallpost.png)
 
 
-<h3>Tech Stack:</h3> Javascript, Python, Flask, Jinja, PostgreSQL, SQL Alchemy, HTML, CSS, Bootstrap
+<h3>Tech Stack:</h3> Javascript, Python, Flask, Jinja, PostgreSQL, SQL Alchemy, Google Maps API, HTML, CSS, Bootstrap
