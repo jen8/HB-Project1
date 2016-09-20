@@ -15,5 +15,4 @@ db.session.add(user3)
 
 
 
-
 db.session.commit()
