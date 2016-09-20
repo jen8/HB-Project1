@@ -8,7 +8,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from werkzeug.utils import secure_filename
 import datetime
 
-# UPLOAD_FOLDER = '/path/to/the/uploads'
+
 
 UPLOAD_FOLDER = './static/uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -20,12 +20,13 @@ from model import connect_to_db, db, Post, User
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = "ABC"
 
 # Normally, if you use an undefined variable in Jinja2, it fails silently.
-# This is horrible. Fix this so that, instead, it raises an error.
+# Fix this so that, instead, it raises an error.
 app.jinja_env.undefined = StrictUndefined
 app.jinja_env.auto_reload = True
 
@@ -61,10 +62,11 @@ def login_process():
 
     flash("Logged in")
     # return redirect("/users/%s" % user.user_id)
-    return redirect("/make_post")
+    return redirect("make_post")
     # create route for this
 
-#### FIX ME...log in allows non-users to post
+
+
 
 @app.route('/registration_form', methods=['GET'])
 def registration_form():
@@ -83,6 +85,7 @@ def process_registration():
     firstname = request.form["firstname"]
     lastname = request.form["lastname"]
     zipcode = request.form["zipcode"]
+
     # take all of the user input and put all user info into database
     new_user = User(username=username, password=password, first_name=firstname, 
     last_name=lastname, zipcode=zipcode)
@@ -96,32 +99,38 @@ def process_registration():
     ## IN ORDER FOR FLASH MSG TO APPEAR, ADD THE APPROPRIATE HTML FOR FLASH 
     flash("User %s added." % username)
 
-    ### DECIDE WHICH PAGE TO SHOW AFTER USER IS SUCCESSFULLY ADDED?
+    
     return render_template("make_post.html")
 
-#### FINISH ME!
+
 
 
 
 @app.route('/make_post')
 def make_post():
     """Shows form to make text post or photo post."""
+    # if "user_id" not in session:  #force user to be logged-in
+    #     return redirect("/")
 
-    return render_template("make_post.html")
+    # greet user when arriving to their post page
+    # get the user id from session then, use id to get firstname of user
+    user = User.query.filter_by(user_id=session["user_id"]).first()
+
+
+    return render_template("make_post.html", first_name=user.first_name)
 
 
 @app.route('/submit_post', methods=['POST'])
 def show_post():
     """Takes posts from website and adds them to crime database."""
-
     filename = None
   
-        # check if the post request has the file part
+    # check if the post request has the file part
     if 'file' not in request.files:
         print "one"
         flash('No file part')
-        ### TO DO : FIX flash and redirect, or else it doesnt get saved to db
-        return redirect(request.url) 
+        
+        return redirect(request.url)
     file = request.files['file']
     # if user does not select file, browser also
     # submit a empty part without filename
@@ -145,41 +154,74 @@ def show_post():
 
     # take the user text post
     post = request.form["post"]
+    # take the category of post user has selected on makepost.html page
+    category = request.form["category"]
+
+    location = request.form["neighborhood"]
+
     # get current date
     right_now = datetime.datetime.utcnow()
-    
-    # date = right_now.strftime("%B %d, %Y")
+
+
+    # get user id from session, then put it into new Post object
     # add new post to database and commit
-    new_post = Post(post=post, photo_id=filename, date=right_now)
+    new_post = Post(post=post, photo_id=filename, location=location, category=category, date=right_now, user_id=session["user_id"])
 
     db.session.add(new_post)
     db.session.commit()
 
  
     # flash("Post %s added." % post)
-
-    return render_template("submit_post.html", post=new_post)
-
-#### FIXME   /r+ symbol added to some posts in database
+    post = Post.query.all()
+    return redirect("/display_post")
 
 
-@app.route('/display_post')
+
+
+@app.route('/display_post', methods=['GET'])
 def display_post():
     """Display Post from crime database to website."""
     # takes posts from database to website
+    
+    # get the option user has selected from the sort menu on display_post.html
+    sort_type = request.args.get("type")
 
-    post = Post.query.all()
+    # get the option that the user requested for neighborhood on make_post.html
+    neighborhoods = request.args.get("neighborhood")
+    
+    print "Sort Type" + str(sort_type)
+
+     # sorts by oldest posts on top
+    if sort_type == "Least Recent":       
+        query = Post.query.order_by(Post.date)      
+    # sorts by crime alerts
+    elif sort_type == "Crime Alert":
+        query = Post.query.filter_by(category='crime')
+    # sorts by community events
+    elif sort_type == "Community Event":
+        query = Post.query.filter_by(category='community')
+    else:  # sort_type == "Most Recent" or sort_type == None:
+        # sorts by newest posts on top by default
+        query = Post.query.order_by(Post.date.desc())
+        
+
+    #  if users chooses not to sort, just display most recent and all neighborhoods
+    if neighborhoods is not None and neighborhoods != "All":
+        query = query.filter_by(location=neighborhoods)
+
+    # run query
+    sorted_posts = query.all()
 
     # query date from database
-    raw_date = db.session.query(Post.date).all()
-    print raw_date
-    # raw_date = Post.query.filter_by(date=date)
-    # SELECT date FROM posts;
-    # take current date into a better looking format (August 16, 2016)
-    # strftime turns datetime object into string 
-    neater_date = raw_date[10][0].strftime("%B %d, %Y")
+    # raw_date = db.session.query(Post.date).all()
+    # print raw_date
 
-    return render_template("display_post.html", post=post, neater_date=neater_date)
+    # take current date into a better looking format (August 16, 2016)
+    # strftime turns datetime object into string
+    # neater_date = raw_date[10][0].strftime("%B %d, %Y")
+
+    return render_template("display_post.html", post=sorted_posts, \
+        sort_type=sort_type, location=neighborhoods)
 
 
 
@@ -231,12 +273,29 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
 
+@app.route('/police_district', methods=['GET'])
+def show_police_station():
+    """Shows police station map"""
+
+    return render_template("police_district.html")
+
 @app.route('/crime_map', methods=['GET'])
 def show_crime_map():
-    """Shows crime map and crime graphs"""
+    """Show crime map"""
 
     return render_template("crime_map.html")
 
+@app.route('/google_crime', methods=['GET'])
+def show_google_crime_map():
+    """Show crime map"""
+
+    return render_template("google_crime_map.html")
+
+@app.route('/safety_tips', methods=['GET'])
+def show_safety_tips():
+    """Shows personal safety tips"""
+
+    return render_template("safety_tips.html")
 
 @app.route('/logout')
 def logout():

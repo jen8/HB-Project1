@@ -1,6 +1,6 @@
 from model import connect_to_db, db, User, Post
 from server import app
-# from datetime import datetime
+
 
 connect_to_db(app)
 
@@ -13,9 +13,6 @@ db.session.add(user1)
 db.session.add(user2)
 db.session.add(user3)
 
-
-post1 = Post(post="What date and time is today?")
-db.session.add(post1)
 
 
 db.session.commit()
