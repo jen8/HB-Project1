@@ -25,6 +25,7 @@ class Post(db.Model):
     # establish relationship between posts and wallposts table 
     # wallpost = db.relationship('WallPost', backref='posts')
     
+    
     # establish relationship between posts and photos table 
     # photos = db.relationship('Photos', backref='posts')
 
