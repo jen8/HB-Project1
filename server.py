@@ -8,7 +8,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from werkzeug.utils import secure_filename
 import datetime
 
-# UPLOAD_FOLDER = '/path/to/the/uploads'
+
 
 UPLOAD_FOLDER = './static/uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -26,7 +26,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "ABC"
 
 # Normally, if you use an undefined variable in Jinja2, it fails silently.
-# This is horrible. Fix this so that, instead, it raises an error.
+# Fix this so that, instead, it raises an error.
 app.jinja_env.undefined = StrictUndefined
 app.jinja_env.auto_reload = True
 
@@ -65,7 +65,7 @@ def login_process():
     return redirect("make_post")
     # create route for this
 
-#### FIX ME...log in allows non-users to post
+
 
 
 @app.route('/registration_form', methods=['GET'])
@@ -99,10 +99,10 @@ def process_registration():
     ## IN ORDER FOR FLASH MSG TO APPEAR, ADD THE APPROPRIATE HTML FOR FLASH 
     flash("User %s added." % username)
 
-    ### DECIDE WHICH PAGE TO SHOW AFTER USER IS SUCCESSFULLY ADDED?
+    
     return render_template("make_post.html")
 
-#### FINISH ME!
+
 
 
 
@@ -129,7 +129,7 @@ def show_post():
     if 'file' not in request.files:
         print "one"
         flash('No file part')
-        ### TO DO : FIX flash and redirect, or else it doesnt get saved to db
+        
         return redirect(request.url)
     file = request.files['file']
     # if user does not select file, browser also
@@ -175,7 +175,7 @@ def show_post():
     post = Post.query.all()
     return redirect("/display_post")
 
-#### FIXME   /r+ symbol added to some posts in database
+
 
 
 @app.route('/display_post', methods=['GET'])
@@ -212,12 +212,12 @@ def display_post():
     # run query
     sorted_posts = query.all()
 
-    # # query date from database
+    # query date from database
     # raw_date = db.session.query(Post.date).all()
     # print raw_date
 
-    # # take current date into a better looking format (August 16, 2016)
-    # # strftime turns datetime object into string
+    # take current date into a better looking format (August 16, 2016)
+    # strftime turns datetime object into string
     # neater_date = raw_date[10][0].strftime("%B %d, %Y")
 
     return render_template("display_post.html", post=sorted_posts, \
