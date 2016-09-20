@@ -68,46 +68,7 @@ class FlaskTestsDatabase(TestCase):
         self.assertIn("Select a neighborhood", result.data)
 
 
-# class FlaskTestsLoggedIn(TestCase):
-#     """Flask tests with user logged in to session."""
 
-#     def setUp(self):
-#         """Stuff to do before every test."""
-
-#         app.config['TESTING'] = True
-#         # app.config['SECRET_KEY'] = 'key'
-#         app.config['SECRET_KEY'] = 'ABC'
-
-#         self.client = app.test_client()
-
-#         with self.client as c:
-#             with c.session_transaction() as sess:
-#                 sess['user_id'] = 1
-
-#     def test_important_page(self):
-#         """Test important page."""
-#         # go to make post page and check if "Hello" is on the page
-#         result = self.client.get("/make_post")
-#         self.assertIn("Hello", result.data)
-
-
-# class FlaskTestsLoggedOut(TestCase):
-#     """Flask tests with user logged in to session."""
-
-#     def setUp(self):
-#         """Stuff to do before every test."""
-
-#         app.config['TESTING'] = True
-#         self.client = app.test_client()
-
-#     def test_important_page(self):
-#         """Test that user can't see important page when logged out."""
-#          # go to home page and check if "Register" is on the page
-#          # go to home page and check if "Select a neighborhood" is not on the page
-
-#         result = self.client.get("http://localhost:5000/", follow_redirects=True)
-#         self.assertNotIn("Select a neighborhood", result.data)
-#         self.assertIn("Register", result.data)
 
 
 if __name__ == "__main__":
