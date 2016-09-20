@@ -5,12 +5,16 @@ from datetime import datetime
 import time
 from string import Template
 
+# get current datetime 
 end_dt = datetime.now()
+# convert current date time into milliseconds
 end_in_millis = time.mktime(end_dt.timetuple())
 
+# get datetime starting from aug 16 and format datetime using strptime 
 start_dt = datetime.strptime("21/08/16 16:30", "%d/%m/%y %H:%M")
+# turn start datetime into milliseconds
 start_time_millis = time.mktime(start_dt.timetuple())
-
+# get time delta between current time(in milliseconds) minus start time(in milliseconds)
 delta = end_in_millis - start_time_millis
 
 
@@ -18,32 +22,60 @@ connect_to_db(app)
 
 locations = ["Mission", "Richmond", "Bernal Heights", "Haight Ashbury", "Noe Valley"]
 category = ["crime", "community"]
-crime_photo = ["c4.jpg", "Doggie-with-ball.jpg"] # TO DO find crime photos
-comm_photo = ["c4.jpg", "Doggie-with-ball.jpg"] # TO DO find comm photos
+crime_photo = ["Mission crime.jpg", "Mission Comm crime.jpg"] # TO DO find crime photos
+comm_photo = ["c4.jpg", "Doggie-with-ball.jpg","619579.gif", "741759.jpg", "corgicon_grass.jpg", "sanfrancisco-photos-3.jpg", \
+"sanfrancisco-photos-6.jpg", "sanfrancisco-photos-6.jpg", "sanfrancisco-photos-6.jpg", "Noe Valley Comm Sunset.jpg"] # TO DO find comm photos
+
 comm_post_strings = ["Jog in the Park", 
                      "Pacific Cafe, Toy Boat among first businesses in city to receive Legacy Business status!",
-                     "Perseid meteor shower primed to go big thanks to real gravitational bully"
+                     "Perseid meteor shower primed to go big thanks to real gravitational bully",
+                     "Tree falls on car in $where",
+                     "Pre-Burning Man Events: A Lower $where Roundup",
+                     "National Night Out Brings SFPD Officers, Community Together For Family-Friendly Fun",
+                     "Water main break in Diamond Heights in $where SF"
+
                     ]
 crim_post_strings = ["Home invasion, a robbery and three suspects charged in June stabbing at $where Bart plaza",
-                     "China Beach closed after vandals lit portapotties on fire Monday night; $30,000 in damage"]
+                     "China Beach closed after vandals lit portapotties on fire Monday night; $30,000 in damage",
+                     "A motorcycle officer was injured in a car collision on Wednesday",
+                     "Two robberies, man in critical condition after stabbing in SF $where",
+                     "Self-driving cars cruise $where District streets a neighborly opinion",
+                     "A woman was robbed by three men at knifepoint in the $where district.",
+                     "The BAR on $where robbed at gunpoint TWICE this week.",
+                     "Smash-And-Grab Burglary Hits $where",
+                     "Man robs $where store while attempting to purchase M&Ms",
+                     "$where Corridor Hit By Duo Of Saturday-Night Armed Robberies",
+                     "A bicyclist was arrested after attempting to snatch a cell phone from a moving car.",
+                     "Auto Wheel Thieves Strike in $where"
+                     ]
 
-
+# loop through 200 posts
 for n in range(201):
+    # get a random post location
     loc = locations[random.randrange(len(locations))]
+    # get a random post category
     cat = random.randrange(len(category))
+    # get a random user id
     user_id = random.randint(1,3)
+    # randomize chance that the post has a photo
     has_pic = random.randrange(2) == 1
     pic = None
 
+    # if the category is crime find a random crime post from crim_post_string list
     if category[cat] == "crime":
         post_string = crim_post_strings[random.randrange(len(crim_post_strings))]
+
+        # if we choose to add a photo, pick from crime_photo list
         if has_pic:
             pic = crime_photo[random.randrange(len(crime_photo))]
+
+    # else find a random community post from comm_post_string list
     else:
         post_string = comm_post_strings[random.randrange(len(comm_post_strings))]
         if has_pic:
             pic = comm_photo[random.randrange(len(comm_photo))]
-
+     
+    # use the $where to substitute out the neighborhood locations
     if "$where" in post_string:
         template = Template(post_string)
         post_string = template.substitute(where=loc)
@@ -53,6 +85,7 @@ for n in range(201):
 
     print str(random_dt) + " " + loc + " " + category[cat] + " " + str(user_id) + " " + str(pic) + " " + post_string
 
+    # save to Post table via SQL Alchemy
     post = Post(post=post_string, location=loc, category=category[cat], user_id=user_id, photo_id=pic,\
                 date=random_dt)
     db.session.add(post)
@@ -66,7 +99,7 @@ for n in range(201):
     # post2 = Post(post="Pacific Cafe, Toy Boat among first businesses in city to receive Legacy Business status!", location="Richmond", category="comunity event")
     # post3 = Post(post="Perseid meteor shower primed to go big thanks to real gravitational bully", location="Richmond", category="comunity event") INSERT PHOTO
 
-    # post4 = Post(post="Cops, FBI arrest serial bank robber on his way to another heist on Geary", location="Richmond", category="crime alert")
+    # post4 = Post(post=c on Geary", location="Richmond", category="crime alert")
     # post5 = Post(post="China Beach closed after vandals lit portapotties on fire Monday night; $30,000 in damage", location="Richmond", category="crime alert")(INSERT PHOTO)
     # post6 = Post(post="SFPD seeking graffiti taggers that may live in Richmond District ", location="Richmond", category="crime alert")
     # post7 = Post(post="Home invasion, a robbery and three suspects charged in June stabbing at Mission Bart plaza", location="Richmond", category="crime alert")
