@@ -1,22 +1,27 @@
 <html>
 <head>
     <title> Make Post </title>
-      <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body style="background:rgb(104, 159, 56);">
     {% include 'navbar.html' %}
 
-<div style="margin-top:100px" class="center maincolorbkground">
-  <div class="formpad">
-Hello {{ first_name }}!
+<div class="center maincolorbkground form-group">
+<div class="formpad">
+
+<font size="5" color="black"> Hello {{ first_name }}!</font>
 
 <form action="/submit_post" method="POST" enctype="multipart/form-data" style="margin-bottom:0em;">
-  <textarea style="margin-top:10px;margin-bottom:10px" rows="4" cols="50" name="post"></textarea><br>
+  <div class="form-group">
+  <textarea placeholder="Write something on me..." style="margin-top:10px;margin-bottom:10px" rows="4" cols="50" name="post"></textarea><br>
   <input type="file" name="file"><br>
   <input type="radio" name="category" value="crime" checked> Crime Alert
   <input type="radio" name="category" value="community"> Community Event
   <br><br>
-  <div> Select a neighborhood:
+  <div class="form-group"> Select a neighborhood:
     <select name="neighborhood">
       <option value="Mission">Mission</option>
       <option value="Richmond">Richmond</option>
@@ -26,8 +31,15 @@ Hello {{ first_name }}!
     </select>
   &nbsp;&nbsp;
   <input type="submit" class="button" name="button"/>
+     <div class="crimeicon" class="form-group">
+     <img src="/static/uploads/spotcrimelogo.jpg" alt="Crime Icon" style="width:128px;height:128px;">
+     </div>
+
   </div>
+</div>
 </form>
+
+
   </div>
 </div>
 

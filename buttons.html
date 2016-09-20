@@ -8,7 +8,7 @@
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head> 
 
-<body style="background:rgb(104, 159, 56);">
+<body style="background-color:#79cd18;">
 <div class="background">
 
 
@@ -21,8 +21,7 @@
 <form action="/display_post" method="GET"> 
 
 
-  Filter By:
-  <div style="padding-bottom:5px" class="dropdown"> 
+  <div style="padding-bottom:5px" class="dropdown"> <!-- Search -->
     <select name="type">
       <option value="Most Recent">Most Recent</option>
       <!-- if user selects neighborhood on make posts page, pre-select that neighborhood on display post -->
@@ -32,8 +31,8 @@
     </select>
   </div>
 
-  Select a neighborhood:
-  <div style="padding-bottom:5px" class="dropdown">
+  
+  <div style="padding-bottom:5px"> <!-- Select a neighborhood: -->
     <select name="neighborhood">
       <option value="All">All Neighborhoods</option>
       <!-- if user selects neighborhood on make posts page, pre-select that neighborhood on display post -->
@@ -55,17 +54,16 @@
 
 {% for p in post %}
 
-  <!-- add 3 posts in a row -->
-  <!-- <div class="col-sm-4 textdiv"> -->
+  
 
 
-  <div class="postbox center" style="background: rgba(255, 255, 255, 0.3);">
+  <div class="postbox center">
   <div class="contentbox">
 
     <!--   show img tag below only if p.photo_id does not equal None -->
     {% if p.photo_id != None %}
     <!-- use jinja to allow users to upload photos -->
-    <div class="imgdiv" style="width:400px"> <img src="static/uploads/{{ p.photo_id }}"style="width:100%"/></div>
+    <div class="imgdiv"> <img src="static/uploads/{{ p.photo_id }}"/></div>
     {% endif %}
 
     <div class="posttext {% if p.photo_id != None %}avoidpic{% endif %}">{{ p.post }}</div>

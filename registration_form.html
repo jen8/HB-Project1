@@ -1,46 +1,48 @@
 <html>
 <head>
     <title> User Registration </title>
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body style="background:rgb(104, 159, 56);">
+<div style="margin:50px">
+  <div style="font-size:25px; margin:60px; float:left;">
   <form action="/process_registration" method="POST">
-    <p> User Registration Form </p>
+    <div style="font-weight:bold;"> User Registration Form </div>
+        <br>
+        <table style="font-size:25px">
+            <tr>
+                <td>Username:</td>
+                <td>&nbsp;<input type="username" name="username" required></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td>&nbsp;<input type="password" name="password" required></td>
+            </tr>
+            <tr>
+                <td>First Name:</td>
+                <td>&nbsp;<input type="firstname" name="firstname" required></td>
+            </tr>
+            <tr>
+                <td>Last Name:</td>
+                <td>&nbsp;<input type="lastname" name="lastname" required></td>
+            </tr>
+            <tr>
+                <td>Zip Code:</td>
+                <td>&nbsp;<input type="zipcode" name="zipcode" required></td>
+            </tr>
+        </table>
 
-        <div>
-            <label>Username:
-                <input type="username" name="username" required>
-            </label>
-        </div>
-
-        <div>
-            <label>Password:
-                <input type="password" name="password" required>
-            </label>
-        </div>
-
-        <div>
-            <label>First Name:
-                <input type="firstname" name="firstname" required>
-            </label>
-        </div>
-
-        <div>
-            <label>Last Name:
-                <input type="lastname" name="lastname" required>
-            </label>
-        </div>
-        <div>
-            <label>Zipcode:
-                <input type="zipcode" name="zipcode" required>
-            </label>
-        </div>
-
-
-        <div>
-            <input type="submit" value="Submit">
+        <div class="form-group" style="padding-top:20px">
+            <input style="font-size:25px;" type="submit" value="Submit">
         </div>
 
     </form>
-
+  </div>
+  <div>
+    <img src="static/uploads/street.jpg"/>
+  </div>
+</div>
 </body>
 </html>

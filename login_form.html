@@ -1,11 +1,18 @@
 <html>
 <head>
     <title> Log In Page </title>
+    <script src="https://code.jquery.com/jquery.js"></script>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </head>
-<body background="http://hdwallpaperbackgrounds.net/wp-content/uploads/2015/07/San-Francisco-fog-HD-Wallpapers.jpg">
-  <h2 style="color:red">Love Thy Neighborhood</h2>  
+<body background="static/uploads/ggbridge1.jpg">
+  <div style="margin-left:100px;">
+    <h2 style="color:#0052cc">Love Thy Neighborhood</h2>
+      <div id="formbox" style="background: rgba(255, 255, 255, 0.3); width:400px;">
+        <div style="padding-left:20px;padding-top:5px;padding-bottom:5px;">
+
+
   <h1>Login</h1>
   
   {% with messages = get_flashed_messages() %}
@@ -17,7 +24,9 @@
  -->    </ul>
   {% endif %}
 {% endwith %}
+
     <form action="/log_in" method="POST" class="form-inline">
+      
 
         <div class="form-group">
             <label>Username:
@@ -35,9 +44,11 @@
             <input type="submit" value="Log In" class="btn btn-default">
         </div>
         <a href="/registration_form">Register</a>
+      
 
     </form>
-
-
+     </div>
+   </div>
+</div>
 </body>
 </html> 
